@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -20,6 +21,28 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func openCamera(_ sender: Any) {
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.allowsEditing = true
+        vc.delegate = self
+        present(vc, animated: true)
+    }
 
 }
 
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+            picker.dismiss(animated: true)
+
+            guard let image = info[UIImagePickerControllerEditedImage] as? UIImage else {
+                print("No image found")
+                return
+            }
+            imageView.image = image
+            print(image.size)
+        }
+
+
+}
